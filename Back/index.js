@@ -48,23 +48,23 @@ app.get("/cursos", async (req, res) => {
 });
 
 // Ruta para agregar o actualizar el archivo del trailer de una película
-app.post("/peliculas/trailer", async (req, res) => {
-  const { pelicula_id, trailer_archivo } = req.body;
+app.post("/cursos/video", async (req, res) => {
+  const { id_cursos, video } = req.body;
 
-  if (!pelicula_id || !trailer_archivo) {
-    return res.status(400).json({ message: 'Faltan datos para agregar el trailer' });
+  if (!id_cursos || !video) {
+    return res.status(400).json({ message: 'Faltan datos para agregar el video' });
   }
 
   try {
     await pool.query(`
-      UPDATE peliculas
-      SET trailer_archivo = $1
-      WHERE id = $2;
-    `, [trailer_archivo, pelicula_id]);
+      UPDATE cursos
+      SET video = $1
+      WHERE id_cursos = $2;
+    `, [video, id_cursos]);
 
-    res.status(200).json({ message: 'Trailer actualizado correctamente' });
+    res.status(200).json({ message: 'Video actualizado correctamente' });
   } catch (error) {
-    console.error('Error al actualizar el trailer:', error);
+    console.error('Error al actualizar el video:', error);
     res.status(500).send('Error interno del servidor');
   }
 });
@@ -116,18 +116,16 @@ app.get("/favoritos/:usuario_id", async (req, res) => {
 
   try {
     const { rows } = await pool.query(`
-      SELECT p.id AS pelicula_id, 
-             p.titulo AS pelicula_titulo, 
-             p.descripcion AS pelicula_descripcion, 
-             p.anio AS pelicula_anio, 
-             g.titulo AS genero_titulo, 
-             s.nombre AS saga_nombre, 
-             p.imagen_url AS pelicula_imagen_url
+        SELECT c.id_cursos AS id_cursos, 
+             c.titulo AS titulo, 
+             c.descripcion AS descripcion, 
+             c.precio AS precio, 
+             t.nombre_tipos AS nombre_tipos,  
+             c.portada AS portada
       FROM favoritos f
-      INNER JOIN peliculas p ON f.pelicula_id = p.id
-      LEFT JOIN generos g ON p.genero_id = g.id
-      LEFT JOIN sagas s ON p.saga_id = s.id
-      WHERE f.usuario_id = $1;
+      INNER JOIN cursos c ON f.cursos_id = c.id_cursos
+      LEFT JOIN tipos t ON c.id_tipos = t.id_tipos
+      WHERE f.id_usuarios = $1;
     `, [usuario_id]);
 
     if (rows.length === 0) {
@@ -143,7 +141,7 @@ app.get("/favoritos/:usuario_id", async (req, res) => {
 
 // Ruta para añadir película a favoritos
 app.post("/favoritos", async (req, res) => {
-  let { usuario_id, pelicula_id } = req.body;
+  let { usuario_id, id_cursos } = req.body;
 
   // Convertir el usuario_id a un número entero
   usuario_id = parseInt(usuario_id, 10);
@@ -159,19 +157,19 @@ app.post("/favoritos", async (req, res) => {
 
   try {
     const checkExistenceQuery = `
-      SELECT 1 FROM favoritos WHERE usuario_id = $1 AND pelicula_id = $2
+      SELECT 1 FROM favoritos WHERE id_usuarios = $1 AND cursos_id = $2
     `;
-    const checkResult = await pool.query(checkExistenceQuery, [usuario_id, pelicula_id]);
+    const checkResult = await pool.query(checkExistenceQuery, [usuario_id, id_cursos]);
 
     if (checkResult.rows.length > 0) {
-      return res.status(400).json({ message: 'La película ya está en favoritos' });
+      return res.status(400).json({ message: 'El curso ya está en favoritos' });
     }
 
     await pool.query(
-      `INSERT INTO favoritos (usuario_id, pelicula_id) VALUES ($1, $2)`,
+      `INSERT INTO favoritos (id_usuarios, cursos_id) VALUES ($1, $2)`,
       [usuario_id, pelicula_id]
     );
-    res.status(200).json({ message: 'Película añadida a favoritos' });
+    res.status(200).json({ message: 'Curso añadido a favoritos' });
   } catch (error) {
     console.error('Error al añadir a favoritos:', error);
     res.status(500).send('Error interno del servidor');
@@ -180,7 +178,7 @@ app.post("/favoritos", async (req, res) => {
 
 // Ruta para eliminar película de favoritos
 app.delete("/favoritos", async (req, res) => {
-  let { usuario_id, pelicula_id } = req.body;
+  let { usuario_id, id_cursos } = req.body;
 
   // Convertir el usuario_id a un número entero
   usuario_id = parseInt(usuario_id, 10);
@@ -190,21 +188,21 @@ app.delete("/favoritos", async (req, res) => {
     return res.status(400).json({ message: 'El ID de usuario no es válido.' });
   }
 
-  if (!pelicula_id) {
+  if (!id_cursos) {
     return res.status(400).json({ message: 'Faltan datos para eliminar de favoritos' });
   }
 
   try {
     const result = await pool.query(
-      `DELETE FROM favoritos WHERE usuario_id = $1 AND pelicula_id = $2`,
-      [usuario_id, pelicula_id]
+      `DELETE FROM favoritos WHERE id_usuarios = $1 AND cursos_id = $2`,
+      [usuario_id, id_cursos]
     );
 
     if (result.rowCount === 0) {
-      return res.status(404).json({ message: 'No se encontró la película en favoritos' });
+      return res.status(404).json({ message: 'No se encontró el curso en favoritos' });
     }
 
-    res.status(200).json({ message: 'Película eliminada de favoritos' });
+    res.status(200).json({ message: 'Curso eliminado de favoritos' });
   } catch (error) {
     console.error('Error al eliminar de favoritos:', error);
     res.status(500).send('Error interno del servidor');
