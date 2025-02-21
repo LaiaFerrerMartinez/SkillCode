@@ -1,0 +1,87 @@
+/* Estilos globales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Fondo de la página */
+body {
+    background-image: url('img/2054aba0-cde3-477d-8ac3-dc98bcdbd30e.jpg');
+    background-size: cover; /* Para que cubra toda la pantalla */
+    background-position: center center; /* Centra la imagen */
+    background-attachment: fixed; /* Fija el fondo mientras se hace scroll */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Altura completa de la ventana */
+}
+
+/* Contenedor del login */
+.login-container {
+    background: rgba(0, 0, 0, 0.7); /* Fondo semitransparente para contraste */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 400px;
+    box-sizing: border-box;
+}
+
+/* Título */
+h1 {
+    color: white;
+    margin-bottom: 20px;
+    font-size: 28px; /* Tamaño del título */
+}
+
+/* Grupo de input */
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+/* Etiquetas */
+.input-group label {
+    color: #ddd;
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Campos de entrada */
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 5px;
+    font-size: 16px;
+    background-color: #333;
+    color: white;
+}
+
+/* Botón */
+button {
+    width: 100%;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Mensaje de error */
+.error-message {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
+}
