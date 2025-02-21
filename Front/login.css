@@ -20,7 +20,7 @@ body {
 
 /* Contenedor del login */
 .login-container {
-    background: rgba(0, 0, 0, 0.7); /* Fondo semitransparente para contraste */
+    background: rgba(0, 0, 0, 0.8); /* Fondo semitransparente para contraste */
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
