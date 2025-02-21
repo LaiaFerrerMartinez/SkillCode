@@ -34,7 +34,6 @@ function inicializar() {
         cursos = data;
         cursosFiltrados = [...cursos];
         mostrarCursos(cursosFiltrados);
-        cargarTipos();
         generarBotonesAcceso();
     })
     .catch(error => console.error('Error:', error));
@@ -44,7 +43,7 @@ function inicializar() {
 
 function generarBotonesAcceso() {
     accesosRapidos.innerHTML = "";
-    const tipos = [...new Set(cursos.map(c => p.saga_nombre))];
+    const tipos = [...new Set(cursos.map(c => c.id_tipos))];
 
     tipos.forEach(tipo => {
         if (tipo !== null && tipo !== undefined) {
@@ -68,8 +67,8 @@ function mostrarCursos(lista) {
         const esFavorito = cursosFavoritosFiltrados.some(c => c.id_cursos === curso.id_cursos);
         const corazonClass = esFavorito ? "fas fa-heart" : "far fa-heart";
         const corazonStyle = esFavorito 
-            ? "background-color: #1c1c2c; color: white; font-size:24px" 
-            : "background-color: #1c1c2c; color: white; font-size:24px";
+            ? "background-color:rgb(255, 255, 255); color: #1c1c2c; font-size:24px" 
+            : "background-color:rgb(255, 255, 255); color: #1c1c2c; font-size:24px";
 
         li.innerHTML = `
             <div class="curso-contenedor">
@@ -121,7 +120,7 @@ function mostrarCursos(lista) {
 function mostrarVideo(cursoId) {
     const curso = cursos.find(c => c.id_cursos == cursoId);
     if (curso) {
-        video.src = `Videos/${curso.video}`; // Cargar desde archivo local
+        reproductorVideo.url = curso.video; // Cargar desde archivo local
         cursoTitle.textContent = curso.titulo;
         cursoPrecio.textContent = curso.precio;
         cursoSynopsis.textContent = curso.descripcion;
@@ -187,7 +186,8 @@ function eliminarDeFavoritos(cursoId) {
     });
 }
 
-function filtrarPeliculasSaga(tipo) {
+
+function filtrarCursos(tipo) {
     const cursosFiltradosPorTipos = cursos.filter(curso => curso.tipo === tipo);
     mostrarCursos(cursosFiltradosPorTipos);
 }
@@ -201,10 +201,6 @@ function buscarPorTitulo() {
 }
 
 // Ordenar películas por año
-function ordenarPeliculas(ascendente = true) {
-    peliculasFiltradas.sort((a, b) => (ascendente ? a.pelicula_anio - b.pelicula_anio : b.pelicula_anio - a.pelicula_anio));
-    mostrarPeliculas(peliculasFiltradas);
-}
 
 document.getElementById('volverLogin').addEventListener('click', function(event) {
     window.location.href = 'login.html'; // Redirigir al perfil
@@ -216,7 +212,6 @@ filtrarFavoritosBtn.addEventListener("click", () => {
 });
 
 buscarBtn.addEventListener("click", buscarPorTitulo);
-ordenarAscBtn.addEventListener("click", () => ordenarPeliculas(true));
-ordenarDescBtn.addEventListener("click", () => ordenarPeliculas(false));
+
 
 inicializar();

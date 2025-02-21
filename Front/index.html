@@ -3,12 +3,66 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
+    <title>ProLearn</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <p>hola</p>
+    <header>
+        <a href="#filtros2"> <!-- Este enlace llevará al inicio de la página -->
+            <img src="./img/LOGO.png" alt="logo"> 
+        </a>
+        <section id="filtros">
+            <!-- Búsqueda y Ordenación -->
+            <div id="extras">
+                <input type="text" id="buscar" placeholder="Buscar por título..."/> <!---Barra de Busqueda-->
+                <button id="buscar-button">Buscar</button>
+                <!-- Añadir un botón para filtrar favoritos -->
+                <button id="filtrar-favoritos">Favoritos</button>
+
+                
+                <a href="#seccion-video">
+                    <button>Videos</button>
+                  </a>
+                <div id="volverLogin">
+                    <button type="click"><img src="https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png" id="foto-usuario" alt="usuario"></button>
+                </div>
+            </div>
+        </section>
+    </header>
+    <main>
+
+        <div id="contenedorMensaje" class="mensaje-vacio">
+            <!-- El mensaje vacío se inyectará aquí -->
+        </div>
+
+        
+        
+        <!-- Listado de Películas -->
+        <section id="listado-cursos">
+            <ul id="cursos"></ul>  <!-- Aquí se listarán las películas desde JSON-->
+        </section>
+
+        <!-- Mensaje cuando no se encuentran películas -->
+        <p id="mensaje-estado" style="display: none;">No se encontraron películas con los criterios seleccionados.</p>
+
+        <section id="seccion-video">
+            <div id="video-container">
+                
+                    <h2 id="curso-title">Selecciona un curso</h2>
+                    <p><strong>Tipo:</strong> <span id="curso-tipo">--</span></p>
+                    <p><strong>Descripción:</strong> <span id="curso-synopsis">--</span></p>
+                
+        
+                <div class="video-right">
+                    <iframe id="reproducir-video" width="100%" height=auto frameborder="0" 
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src='main.js'></script>
 </body>
 </html>
