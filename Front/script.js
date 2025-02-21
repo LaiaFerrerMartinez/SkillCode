@@ -1,8 +1,8 @@
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const usuario = document.getElementById('nombre').value.trim();
-    const contrasenia = document.getElementById('contraseña').value.trim();
+    const usuario = document.getElementById('nombre_usuario').value.trim();
+    const contrasenia = document.getElementById('password').value.trim();
 
     if (!usuario || !contrasenia) {
         alert("Por favor, complete ambos campos.");
@@ -23,7 +23,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         if (data.success) {
             // Guardamos los datos en localStorage
             localStorage.setItem('userId', data.userId); // Guardamos el ID
-            localStorage.setItem('userName', data.nombre); // Guardamos el nombre de usuario
+            localStorage.setItem('userName', data.nombre_usuario); // Guardamos el nombre de usuario
             window.location.href = 'index.html'; // Redirigir al perfil
         } else {
             alert('Login Fallido: ' + data.message);
