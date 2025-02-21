@@ -151,7 +151,7 @@ app.post("/favoritos", async (req, res) => {
     return res.status(400).json({ message: 'El ID de usuario no es válido.' });
   }
 
-  if (!pelicula_id) {
+  if (!id_cursos) {
     return res.status(400).json({ message: 'Faltan datos para agregar a favoritos' });
   }
 
@@ -167,7 +167,7 @@ app.post("/favoritos", async (req, res) => {
 
     await pool.query(
       `INSERT INTO favoritos (id_usuarios, cursos_id) VALUES ($1, $2)`,
-      [usuario_id, pelicula_id]
+      [usuario_id, id_cursos]
     );
     res.status(200).json({ message: 'Curso añadido a favoritos' });
   } catch (error) {
