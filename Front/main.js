@@ -43,10 +43,10 @@ function inicializar() {
 
 function generarBotonesAcceso() {
     accesosRapidos.innerHTML = "";
-    const tipos = [...new Set(cursos.map(c => c.id_tipos))];
+    const tipos = [...new Set(cursos.map(c => c.nombre_tipos))];
 
     tipos.forEach(tipo => {
-        if (tipo !== null && tipo !== undefined) {
+        if (tipo !== null) {
             const button = document.createElement("button");
             button.textContent = tipo;
             button.addEventListener("click", () => filtrarCursos(tipo));
@@ -188,8 +188,8 @@ function eliminarDeFavoritos(cursoId) {
 
 
 function filtrarCursos(tipo) {
-    const cursosFiltradosPorTipos = cursos.filter(curso => curso.tipo === tipo);
-    mostrarCursos(cursosFiltradosPorTipos);
+    const cursosFiltradoPorTipo = cursos.filter(curso => curso.nombre_tipos === tipo);
+    mostrarCursos(cursosFiltradoPorTipo);
 }
 
 function buscarPorTitulo() {
