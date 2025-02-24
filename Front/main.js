@@ -77,7 +77,7 @@ function mostrarCursos(lista) {
                 </div>
                 <div class="curso-detalles">
                     <h2>${curso.titulo}</h2>
-                    <p>Tipo: ${curso.id_tipos}</p>
+                    <p>Tipo: ${curso.nombre_tipos}</p>
                     <p>Descripción: ${curso.descripcion}</p>
                     <p>Precio: ${curso.precio}</p>
                     <div class="ver-video-container"><a href="#seccion-video">
@@ -109,10 +109,10 @@ function mostrarCursos(lista) {
         });
     });
 
-    document.querySelectorAll('.ver-video').forEach(boton => {
+    document.querySelectorAll('.ver-trailer').forEach(boton => {
         boton.addEventListener('click', (event) => {
-            const cursoId = event.target.getAttribute('data-video-id');
-            mostrarVideo(cursoId);
+            const cursoId = event.target.getAttribute('data-pelicula-id');
+            mostrarTrailer(cursoId);
         });
     });
 }
@@ -120,7 +120,8 @@ function mostrarCursos(lista) {
 function mostrarVideo(cursoId) {
     const curso = cursos.find(c => c.id_cursos == cursoId);
     if (curso) {
-        reproductorVideo.url = curso.video; // Cargar desde archivo local
+        
+        reproductorVideo.src = curso.video; // Cargar desde archivo local
         cursoTitle.textContent = curso.titulo;
         cursoPrecio.textContent = curso.precio;
         cursoSynopsis.textContent = curso.descripcion;
@@ -130,7 +131,6 @@ function mostrarVideo(cursoId) {
         console.error('Curso no encontrado');
     }
 }
-
 function agregarAFavoritos(cursoId) {
     fetch('http://localhost:3000/favoritos', {
         method: 'POST',
@@ -139,9 +139,11 @@ function agregarAFavoritos(cursoId) {
         },
         body: JSON.stringify({ usuario_id: userId, id_cursos: cursoId })
     })
-    .then(response => response.json())
-    .then(() => {
-        cargarFavoritos();
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        return response.json();
     })
     .catch(error => {
         console.error('Error al añadir a favoritos:', error);
@@ -151,7 +153,12 @@ function agregarAFavoritos(cursoId) {
 
 function cargarFavoritos() {
     fetch(`http://localhost:3000/favoritos/${userId}`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al cargar favoritos');
+            }
+            return response.json();
+        })
         .then(data => {
             console.log("Favoritos cargados:", data); // 🔍 Debugging
             cursosFavoritosFiltrados = Array.isArray(data) ? data : [];
@@ -159,7 +166,7 @@ function cargarFavoritos() {
             if (filtrarFavoritosBtn.classList.contains("activo")) {
                 mostrarCursos(cursosFavoritosFiltrados);
             } else {
-                mostrarCursoss(cursosFiltrados.length > 0 ? cursosFiltrados : cursos);
+                mostrarCursos(cursosFiltrados.length > 0 ? cursosFiltrados : cursos);
             }
         })
         .catch(error => {
@@ -176,7 +183,12 @@ function eliminarDeFavoritos(cursoId) {
         },
         body: JSON.stringify({ usuario_id: userId, id_cursos: cursoId })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor al eliminar');
+        }
+        return response.json();
+    })
     .then(() => {
         cargarFavoritos();  // Recargar la lista de favoritos inmediatamente
     })
@@ -185,6 +197,7 @@ function eliminarDeFavoritos(cursoId) {
         alert("Hubo un error al eliminar de favoritos.");
     });
 }
+
 
 
 function filtrarCursos(tipo) {
