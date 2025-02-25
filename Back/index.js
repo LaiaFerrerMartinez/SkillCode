@@ -123,7 +123,7 @@ app.get("/favoritos/:usuario_id", async (req, res) => {
              t.nombre_tipos AS nombre_tipos,  
              c.portada AS portada
       FROM favoritos f
-      INNER JOIN cursos c ON f.cursos_id = c.id_cursos
+      INNER JOIN cursos c ON f.id_cursos = c.id_cursos
       LEFT JOIN tipos t ON c.id_tipos = t.id_tipos
       WHERE f.id_usuarios = $1;
     `, [usuario_id]);
@@ -157,7 +157,7 @@ app.post("/favoritos", async (req, res) => {
 
   try {
     const checkExistenceQuery = `
-      SELECT 1 FROM favoritos WHERE id_usuarios = $1 AND cursos_id = $2
+      SELECT 1 FROM favoritos WHERE id_usuarios = $1 AND id_cursos = $2
     `;
     const checkResult = await pool.query(checkExistenceQuery, [usuario_id, id_cursos]);
 
@@ -166,7 +166,7 @@ app.post("/favoritos", async (req, res) => {
     }
 
     await pool.query(
-      `INSERT INTO favoritos (id_usuarios, cursos_id) VALUES ($1, $2)`,
+      `INSERT INTO favoritos (id_usuarios, id_cursos) VALUES ($1, $2)`,
       [usuario_id, id_cursos]
     );
     res.status(200).json({ message: 'Curso añadido a favoritos' });
@@ -194,7 +194,7 @@ app.delete("/favoritos", async (req, res) => {
 
   try {
     const result = await pool.query(
-      `DELETE FROM favoritos WHERE id_usuarios = $1 AND cursos_id = $2`,
+      `DELETE FROM favoritos WHERE id_usuarios = $1 AND id_cursos = $2`,
       [usuario_id, id_cursos]
     );
 

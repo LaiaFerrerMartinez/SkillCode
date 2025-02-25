@@ -67,8 +67,8 @@ function mostrarCursos(lista) {
         const esFavorito = cursosFavoritosFiltrados.some(c => c.id_cursos === curso.id_cursos);
         const corazonClass = esFavorito ? "fas fa-heart" : "far fa-heart";
         const corazonStyle = esFavorito 
-            ? "background-color:rgb(255, 255, 255); color: #1c1c2c; font-size:24px" 
-            : "background-color:rgb(255, 255, 255); color: #1c1c2c; font-size:24px";
+            ? "background-color:white; color: #1c1c2c; font-size:24px" 
+            : "background-color:white; color: #1c1c2c; font-size:24px";
 
         li.innerHTML = `
             <div class="curso-contenedor">
@@ -85,7 +85,7 @@ function mostrarCursos(lista) {
                         </a>
                     </div>
                     <div class="favoritos-container">
-                        <button class="favorito-btn" data-video-id="${curso.id_cursos}">
+                        <button class="favorito-btn" data-curso-id="${curso.id_cursos}">
                             <i class="${corazonClass}" style="${corazonStyle}"></i>
                         </button>
                     </div>
@@ -139,11 +139,9 @@ function agregarAFavoritos(cursoId) {
         },
         body: JSON.stringify({ usuario_id: userId, id_cursos: cursoId })
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error en la respuesta del servidor');
-        }
-        return response.json();
+    .then(response => response.json())
+    .then(() => {
+        cargarFavoritos();
     })
     .catch(error => {
         console.error('Error al añadir a favoritos:', error);
