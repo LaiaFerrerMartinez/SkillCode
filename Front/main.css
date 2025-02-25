@@ -473,6 +473,10 @@ ul#cursos-favoritos li:hover {
 
 strong {
     color: #2a7ec3; /* Un color llamativo para las etiquetas como Año, Género, etc. */
+    white-space: normal; /* Permite que el texto ocupe varias líneas */
+    overflow: visible;   /* Asegura que el texto no se recorte */
+    text-overflow: clip; /* Elimina los puntos suspensivos */
+    height: auto;        /* Asegura que el contenedor se ajuste al contenido */
 }
 
 .video-right {

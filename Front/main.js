@@ -109,10 +109,10 @@ function mostrarCursos(lista) {
         });
     });
 
-    document.querySelectorAll('.ver-trailer').forEach(boton => {
+    document.querySelectorAll('.ver-video').forEach(boton => {
         boton.addEventListener('click', (event) => {
-            const cursoId = event.target.getAttribute('data-pelicula-id');
-            mostrarTrailer(cursoId);
+            const cursoId = event.target.getAttribute('data-curso-id');
+            mostrarVideo(cursoId);
         });
     });
 }
@@ -121,9 +121,8 @@ function mostrarVideo(cursoId) {
     const curso = cursos.find(c => c.id_cursos == cursoId);
     if (curso) {
         
-        reproductorVideo.src = curso.video; // Cargar desde archivo local
+        reproductorVideo.src = 'https://youtu.be/Cs5ymoNkrX8?si=qrbt7zlFTVI8Ehcw'; // Cargar desde archivo local
         cursoTitle.textContent = curso.titulo;
-        cursoPrecio.textContent = curso.precio;
         cursoSynopsis.textContent = curso.descripcion;
         videoContainer.style.display = 'block'; // Hacer visible el contenedor del trailer
     } else {
