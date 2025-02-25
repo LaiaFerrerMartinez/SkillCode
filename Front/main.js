@@ -117,11 +117,12 @@ function mostrarCursos(lista) {
     });
 }
 
+
 function mostrarVideo(cursoId) {
     const curso = cursos.find(c => c.id_cursos == cursoId);
     if (curso) {
         
-        reproductorVideo.src = 'https://youtu.be/Cs5ymoNkrX8?si=qrbt7zlFTVI8Ehcw'; // Cargar desde archivo local
+        reproductorVideo.src = curso.video; // Cargar desde archivo local
         cursoTitle.textContent = curso.titulo;
         cursoSynopsis.textContent = curso.descripcion;
         videoContainer.style.display = 'block'; // Hacer visible el contenedor del trailer
